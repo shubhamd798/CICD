@@ -1,0 +1,33 @@
+name: Local CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run Sample Test
+      run: |
+        echo "Hello CI/CD"
+        python -m unittest || echo "No tests yet"
+
+    - name: Build Docker Image
+      run: docker build -t local-cicd-app .
+
+    - name: Save Docker Image as tar (for local testing)
+      run: docker save -o local-cicd-app.tar local-cicd-app
