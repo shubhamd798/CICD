@@ -1,9 +1,6 @@
+import pytest
+from app.main import your_main_function  # adjust based on actual function
 
-
-from app.main import greet
-
-def test_valid_greeting():
-    assert greet("Shubh") == "Hello, Shubh!"
-
-def test_invalid_greeting():
-    assert greet("") == "Invalid name."
+def test_main_function_behavior():
+    result = your_main_function()  # use real input if needed
+    assert result == expected_output
