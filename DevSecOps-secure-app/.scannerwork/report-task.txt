@@ -1,0 +1,7 @@
+organization=shubhamd798
+projectKey=shubhamd798_CICD
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.61852
+dashboardUrl=https://sonarcloud.io/dashboard?id=shubhamd798_CICD
+ceTaskId=AZYuOceyPu9AgDDB-2yG
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZYuOceyPu9AgDDB-2yG
