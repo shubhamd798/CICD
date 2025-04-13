@@ -25,18 +25,18 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    # - name: 🔍 Run SonarScanner CLI
-    #   run: |
-    #     curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-    #     unzip sonar-scanner.zip
-    #     mv sonar-scanner-* sonar-scanner
-    #     chmod +x sonar-scanner/bin/sonar-scanner
-    #     ./sonar-scanner/bin/sonar-scanner \
-    #       -Dsonar.projectKey=shubhamd798_CICD \
-    #       -Dsonar.organization=shubhamd798 \
-    #       -Dsonar.sources=DevSecOps-secure-app \
-    #       -Dsonar.host.url=https://sonarcloud.io \
-    #       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+    - name: 🔍 Run SonarScanner CLI
+      run: |
+        curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+        unzip sonar-scanner.zip
+        mv sonar-scanner-* sonar-scanner
+        chmod +x sonar-scanner/bin/sonar-scanner
+        ./sonar-scanner/bin/sonar-scanner \
+          -Dsonar.projectKey=shubhamd798_CICD \
+          -Dsonar.organization=shubhamd798 \
+          -Dsonar.sources=DevSecOps-secure-app \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     # You can then continue with the rest of the steps below...
     - name: 🌀 Set up Python
@@ -87,6 +87,7 @@ jobs:
       with:
           name: app-artifacts
           path: ./DevSecOps-secure-app/dist/
+          if-no-files-found: warn
   
     - name: ⚠️ Notify on Failure
       if: failure()
