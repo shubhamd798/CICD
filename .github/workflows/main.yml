@@ -32,7 +32,7 @@ jobs:
     - name: ✅ Run Unit Tests
       working-directory: DevSecOps-secure-app
       run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/app
         pytest tests/
 
     - name: 🔍 SonarCloud Scan
