@@ -38,9 +38,11 @@ jobs:
     - name: 🔍 SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@v1.9
       with:
-        organization: ${{ secrets.SONAR_ORG }}
-        projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
-        token: ${{ secrets.SONAR_TOKEN }}
+        projectBaseDir: .
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
 
     - name: 🛡️ Snyk Dependency Scan
       uses: snyk/actions@master
