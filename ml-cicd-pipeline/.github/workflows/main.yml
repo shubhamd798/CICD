@@ -16,16 +16,26 @@ jobs:
       with:
         python-version: '3.9'
 
+    - name: Debug - Show files
+      working-directory: ml-cicd-pipeline
+      run: |
+        echo "Current directory: $(pwd)"
+        ls -la
+
     - name: Install dependencies
+      working-directory: ml-cicd-pipeline
       run: pip install -r requirements.txt
 
     - name: Run Unit Tests
+      working-directory: ml-cicd-pipeline
       run: pytest tests/
 
     - name: Train Model
+      working-directory: ml-cicd-pipeline
       run: python model/train.py
 
     - name: Evaluate Model
+      working-directory: ml-cicd-pipeline
       run: python model/evaluate.py
 
   deploy:
@@ -37,7 +47,9 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build Docker image
+      working-directory: ml-cicd-pipeline
       run: docker build -t ml-api .
 
     - name: Run container (local test)
+      working-directory: ml-cicd-pipeline
       run: docker run -d -p 8000:8000 ml-api
