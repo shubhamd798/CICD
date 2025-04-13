@@ -16,12 +16,6 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: Debug - Show files
-      working-directory: ml-cicd-pipeline
-      run: |
-        echo "Current directory: $(pwd)"
-        ls -la
-
     - name: Install dependencies
       working-directory: ml-cicd-pipeline
       run: pip install -r requirements.txt
