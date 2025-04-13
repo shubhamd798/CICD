@@ -62,3 +62,20 @@ jobs:
         snyk test --file=DevSecOps-secure-app/requirements.txt --package-manager=pip --project-name=DevSecOps-secure-app
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: 🐳 Trivy Docker Scan
+      run: |
+          docker build -t myapp:latest DevSecOps-secure-app
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          trivy image --exit-code 1 --severity CRITICAL,HIGH myapp:latest
+  
+    - name: 📄 Upload Artifact
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+          name: app-artifacts
+          path: ./DevSecOps-secure-app/dist/
+  
+    - name: ⚠️ Notify on Failure
+      if: failure()
+      run: echo "❌ Build or Security Scan failed"
