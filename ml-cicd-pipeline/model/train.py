@@ -20,8 +20,8 @@ model = XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
 model.fit(X_train, y_train)
 
 # Save model
-model_path = "/app/model.pkl"  # Save to top-level app folder
-# model_path = "model.pkl"  # Save to top-level app folder/
+# model_path = "/app/model.pkl"  # Save to top-level app folder
+model_path = "model.pkl"  # Save to top-level app folder/
 with open(model_path, "wb") as f:
     pickle.dump(model, f)
 
