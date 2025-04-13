@@ -50,9 +50,9 @@ jobs:
       run: |
         curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
         unzip sonar-scanner.zip
-        mv sonar-scanner-*-linux sonar-scanner
-        chmod +x sonar-scanner/bin/sonar-scanner
-        ./sonar-scanner/bin/sonar-scanner \
+        SCANNER_DIR=$(find . -type d -name "sonar-scanner-*" -print -quit)
+        chmod +x "$SCANNER_DIR/bin/sonar-scanner"
+        "$SCANNER_DIR/bin/sonar-scanner" \
           -Dsonar.projectKey=shubhamd798_CICD \
           -Dsonar.organization=shubhamd798 \
           -Dsonar.sources=. \
