@@ -55,8 +55,9 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)/app
         pytest tests/
 
-    - name: 🛡️ Snyk Dependency Scan
+    - name: 🛡️ Snyk Dependency Scan (run block)
       run: |
+        npm install -g snyk
         pip install -r DevSecOps-secure-app/requirements.txt
         snyk test --file=DevSecOps-secure-app/requirements.txt --package-manager=pip --project-name=DevSecOps-secure-app
       env:
