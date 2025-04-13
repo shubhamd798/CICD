@@ -38,6 +38,11 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: 🔍 Validate Secrets (debug only)
+      run: |
+        if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then echo "❌ SONAR_TOKEN is missing"; else echo "✅ SONAR_TOKEN is present"; fi
+        if [ -z "${{ secrets.SNYK_TOKEN }}" ]; then echo "❌ SNYK_TOKEN is missing"; else echo "✅ SNYK_TOKEN is present"; fi
+
     - name: 🔍 SonarCloud Scan
       working-directory: DevSecOps-secure-app
       env:
@@ -77,5 +82,3 @@ jobs:
     - name: ⚠️ Notify on Failure
       if: failure()
       run: echo "❌ Build or Security Scan failed"
-
-      
