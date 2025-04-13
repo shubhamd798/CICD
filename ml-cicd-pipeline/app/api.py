@@ -1,13 +1,19 @@
 from fastapi import FastAPI
-import pickle
 import numpy as np
+import pickle
+import os
 
 app = FastAPI()
-model = pickle.load(open("model.pkl", "rb"))
+
+model_path = "/app/model.pkl"
+if not os.path.exists(model_path):
+    raise FileNotFoundError(f"❌ Model file not found at {model_path}")
+
+model = pickle.load(open(model_path, "rb"))
 
 @app.get("/")
-def read_root():
-    return {"message": "ML Model API is running!"}
+def root():
+    return {"message": "ML model is live!"}
 
 @app.post("/predict")
 def predict(features: list):
