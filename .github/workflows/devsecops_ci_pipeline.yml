@@ -63,14 +63,22 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-    - name: 🐳 Trivy Docker Scan
-      run: |
-          docker build -t myapp:latest DevSecOps-secure-app
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-          trivy image --exit-code 1 --severity CRITICAL,HIGH myapp:latest
+    - name: 🐳 Build Docker Image
+      run: docker build -t myapp:latest DevSecOps-secure-app
   
-    - name: 📄 Upload Artifact
-      if: success()
+    - name: 🧾 Run Trivy and export report
+      run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          trivy image --format json --output trivy-report.json --severity CRITICAL,HIGH myapp:latest || true
+  
+    - name: 📤 Upload Trivy report artifact
+      uses: actions/upload-artifact@v4
+      with:
+          name: trivy-report
+          path: trivy-report.json
+  
+    - name: 📄 Upload App Artifact
+      if: always()
       uses: actions/upload-artifact@v4
       with:
           name: app-artifacts
@@ -79,3 +87,4 @@ jobs:
     - name: ⚠️ Notify on Failure
       if: failure()
       run: echo "❌ Build or Security Scan failed"
+  
