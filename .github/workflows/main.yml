@@ -41,21 +41,17 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: 🔍 Run SonarScanner CLI
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-        SONAR_ORG: ${{ secrets.SONAR_ORG }}
+    - name: 🔍 Run SonarScanner CLI (Hardcoded for Debug)
       run: |
         curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
         unzip sonar-scanner.zip
         mv sonar-scanner-* sonar-scanner
         ./sonar-scanner/bin/sonar-scanner \
-          -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-          -Dsonar.organization=$SONAR_ORG \
+          -Dsonar.projectKey=shubhamd798_CICD \
+          -Dsonar.organization=shubhamd798 \
           -Dsonar.sources=DevSecOps-secure-app \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.login=your_actual_token_here
 
     - name: 🛡️ Snyk Dependency Scan
       uses: snyk/actions@master

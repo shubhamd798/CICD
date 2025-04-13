@@ -1,13 +1,78 @@
-name: CI Trigger Test
+name: DevSecOps Secure CI/CD
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  test:
+  build-and-scan:
+    name: 🔐 Build & Security Scan
     runs-on: ubuntu-latest
+
     steps:
-      - name: ��� Verify CI Trigger
-        run: echo "✅ CI trigger working!"
+    - name: 📦 Checkout Code
+      uses: actions/checkout@v3
+
+    - name: 🌀 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: 🔄 Change to app directory
+      run: cd DevSecOps-secure-app
+
+    - name: 📅 Install Dependencies
+      working-directory: DevSecOps-secure-app
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: ✅ Run Unit Tests
+      working-directory: DevSecOps-secure-app
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/app
+        pytest tests/
+
+    - name: ☕ Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: 🔍 Run SonarScanner CLI (Hardcoded for Debug)
+      run: |
+        curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+        unzip sonar-scanner.zip
+        mv sonar-scanner-* sonar-scanner
+        ./sonar-scanner/bin/sonar-scanner \
+          -Dsonar.projectKey=shubhamd798_CICD \
+          -Dsonar.organization=shubhamd798 \
+          -Dsonar.sources=DevSecOps-secure-app \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=your_actual_token_here
+
+    - name: 🛡️ Snyk Dependency Scan
+      uses: snyk/actions@master
+      with:
+        command: test
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: 🐳 Trivy Docker Scan
+      run: |
+        docker build -t myapp:latest DevSecOps-secure-app
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+        trivy image --exit-code 1 --severity CRITICAL,HIGH myapp:latest
+
+    - name: 📄 Upload Artifact
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-artifacts
+        path: ./DevSecOps-secure-app/dist/
+
+    - name: ⚠️ Notify on Failure
+      if: failure()
+      run: echo "❌ Build or Security Scan failed"
