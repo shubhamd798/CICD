@@ -2,9 +2,13 @@ name: DevSecOps Secure CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+      - feature/devsecops-pipeline
   pull_request:
-    branches: [main]
+    branches: 
+      - main
+      - feature/devsecops-pipeline
 
 jobs:
   build-and-scan:
