@@ -1,71 +1,71 @@
-name: DevSecOps Secure CI/CD
+# name: DevSecOps Secure CI/CD
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
-jobs:
-  build-and-scan:
-    name: 🔐 Build & Security Scan
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-scan:
+#     name: 🔐 Build & Security Scan
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: 📦 Checkout Code
-      uses: actions/checkout@v3
+#     steps:
+#     - name: 📦 Checkout Code
+#       uses: actions/checkout@v3
 
-    - name: 🌀 Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+#     - name: 🌀 Set up Python
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: '3.9'
 
-    - name: 📅 Install Dependencies
-      working-directory: DevSecOps-secure-app
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+#     - name: 📅 Install Dependencies
+#       working-directory: DevSecOps-secure-app
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install -r requirements.txt
 
-    - name: ✅ Run Unit Tests
-      working-directory: DevSecOps-secure-app
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)/app
-        pytest tests/
+#     - name: ✅ Run Unit Tests
+#       working-directory: DevSecOps-secure-app
+#       run: |
+#         export PYTHONPATH=$PYTHONPATH:$(pwd)/app
+#         pytest tests/
 
-    - name: ☕ Set up Java 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+#     - name: ☕ Set up Java 17
+#       uses: actions/setup-java@v3
+#       with:
+#         distribution: 'temurin'
+#         java-version: '17'
 
-    - name: 🔍 SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v2
-      with:
-        projectKey: shubhamd798_CICD
-        organization: shubhamd798
-      env:
-        SONAR_TOKEN: abcaffe8b76c6cd776974c0936d48714a78ada1a
+#     - name: 🔍 SonarCloud Scan
+#       uses: SonarSource/sonarcloud-github-action@v2
+#       with:
+#         projectKey: shubhamd798_CICD
+#         organization: shubhamd798
+#       env:
+#         SONAR_TOKEN: abcaffe8b76c6cd776974c0936d48714a78ada1a
 
-    - name: 🛡️ Snyk Dependency Scan
-      uses: snyk/actions@master
-      with:
-        command: test
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#     - name: 🛡️ Snyk Dependency Scan
+#       uses: snyk/actions@master
+#       with:
+#         command: test
+#       env:
+#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-    - name: 🐳 Trivy Docker Scan
-      run: |
-        docker build -t myapp:latest DevSecOps-secure-app
-        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-        trivy image --exit-code 1 --severity CRITICAL,HIGH myapp:latest
+#     - name: 🐳 Trivy Docker Scan
+#       run: |
+#         docker build -t myapp:latest DevSecOps-secure-app
+#         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+#         trivy image --exit-code 1 --severity CRITICAL,HIGH myapp:latest
 
-    - name: 📄 Upload Artifact
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-artifacts
-        path: ./DevSecOps-secure-app/dist/
+#     - name: 📄 Upload Artifact
+#       if: success()
+#       uses: actions/upload-artifact@v4
+#       with:
+#         name: app-artifacts
+#         path: ./DevSecOps-secure-app/dist/
 
-    - name: ⚠️ Notify on Failure
-      if: failure()
-      run: echo "❌ Build or Security Scan failed"
+#     - name: ⚠️ Notify on Failure
+#       if: failure()
+#       run: echo "❌ Build or Security Scan failed"

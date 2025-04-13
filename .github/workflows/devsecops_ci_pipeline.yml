@@ -56,9 +56,8 @@ jobs:
         pytest tests/
 
     - name: 🛡️ Snyk Dependency Scan
-      uses: snyk/actions@master
-      with:
-        command: test
-        args: --file=requirements.txt --package-manager=pip --project-name=DevSecOps-secure-app
+      run: |
+        pip install -r DevSecOps-secure-app/requirements.txt
+        snyk test --file=DevSecOps-secure-app/requirements.txt --package-manager=pip --project-name=DevSecOps-secure-app
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
