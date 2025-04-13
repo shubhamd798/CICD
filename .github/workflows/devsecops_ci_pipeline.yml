@@ -38,7 +38,7 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: 🔍 Run SonarScanner CLI (via secret token)
+    - name: 🔍 SonarCloud Scan
       working-directory: DevSecOps-secure-app
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -46,6 +46,7 @@ jobs:
         curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
         unzip sonar-scanner.zip
         mv sonar-scanner-* sonar-scanner
+        chmod +x sonar-scanner/bin/sonar-scanner
         ./sonar-scanner/bin/sonar-scanner \
           -Dsonar.projectKey=shubhamd798_CICD \
           -Dsonar.organization=shubhamd798 \
@@ -76,4 +77,3 @@ jobs:
     - name: ⚠️ Notify on Failure
       if: failure()
       run: echo "❌ Build or Security Scan failed"
-
