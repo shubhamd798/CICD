@@ -31,7 +31,9 @@ jobs:
 
     - name: ✅ Run Unit Tests
       working-directory: DevSecOps-secure-app
-      run: pytest tests/
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        pytest tests/
 
     - name: 🔍 SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@v1.9
