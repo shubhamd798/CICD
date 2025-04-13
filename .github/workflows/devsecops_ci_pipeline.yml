@@ -40,10 +40,12 @@ jobs:
 
     - name: 🔍 SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2
-      with:
-        projectKey: shubhamd798_CICD
-        organization: shubhamd798
+      # with:
+      #   SONAR_PROJECTKEY: shubhamd798_CICD
+      #   SONAR_ORGAINZATION: shubhamd798
       env:
+        SONAR_PROJECTKEY: shubhamd798_CICD
+        SONAR_ORGAINZATION: shubhamd798
         SONAR_TOKEN: abcaffe8b76c6cd776974c0936d48714a78ada1a
 
     - name: 🛡️ Snyk Dependency Scan
