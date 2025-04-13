@@ -81,13 +81,14 @@ jobs:
           name: trivy-report
           path: trivy-report.json
   
-    - name: 📄 Upload App Artifact
+    - name: 📄 Upload Test & Sonar Reports
       if: always()
       uses: actions/upload-artifact@v4
       with:
-          name: app-artifacts
-          path: ./DevSecOps-secure-app/dist/
-          if-no-files-found: warn
+        name: reports
+        path: |
+          DevSecOps-secure-app/tests/
+          DevSecOps-secure-app/.scannerwork/
   
     - name: ⚠️ Notify on Failure
       if: failure()
