@@ -1,0 +1,6 @@
+sonar.projectKey=your_project_key
+sonar.organization=your_org
+sonar.sources=app
+sonar.tests=tests
+sonar.python.version=3.9
+sonar.language=py

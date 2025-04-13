@@ -1,0 +1,59 @@
+name: DevSecOps Secure CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Unit Tests
+      run: pytest tests/
+
+    - name: Static Code Analysis (SonarQube)
+      uses: sonarsource/sonarcloud-github-action@v1.9
+      with:
+        organization: ${{ secrets.SONAR_ORG }}
+        projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
+        token: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Scan Dependencies (Snyk)
+      uses: snyk/actions@master
+      with:
+        command: test
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: Scan Docker Image (Trivy)
+      run: |
+        docker build -t myapp:latest .
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+        trivy image --exit-code 1 --severity CRITICAL,HIGH myapp:latest
+
+    - name: Upload Artifacts (if tests pass)
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-artifacts
+        path: ./dist/
+
+    - name: Notify on Slack (Optional)
+      if: failure()
+      run: echo "Security or test failure in CI/CD"
