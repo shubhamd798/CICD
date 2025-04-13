@@ -38,15 +38,17 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: 🔍 SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v2
-      # with:
-      #   SONAR_PROJECTKEY: shubhamd798_CICD
-      #   SONAR_ORGAINZATION: shubhamd798
-      env:
-        SONAR_PROJECTKEY: shubhamd798_CICD
-        SONAR_ORGAINZATION: shubhamd798
-        SONAR_TOKEN: abcaffe8b76c6cd776974c0936d48714a78ada1a
+    - name: 🔍 Run SonarScanner CLI (via secret token)
+      run: |
+        curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+        unzip sonar-scanner.zip
+        mv sonar-scanner-* sonar-scanner
+        ./sonar-scanner/bin/sonar-scanner \
+          -Dsonar.projectKey=shubhamd798_CICD \
+          -Dsonar.organization=shubhamd798 \
+          -Dsonar.sources=DevSecOps-secure-app \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: 🛡️ Snyk Dependency Scan
       uses: snyk/actions@master
