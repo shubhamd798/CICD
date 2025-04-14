@@ -34,8 +34,7 @@ jobs:
         ./sonar-scanner/bin/sonar-scanner \
           -Dsonar.projectKey=shubhamd798_CICD \
           -Dsonar.organization=shubhamd798 \
-          -Dsonar.sources=DevSecOps-secure-app/app \
-          -Dsonar.test=DevSecOps-secure-app/tests \    
+          -Dsonar.sources=DevSecOps-secure-app \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
