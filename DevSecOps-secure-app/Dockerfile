@@ -5,5 +5,7 @@ COPY tests/ ./tests/
 COPY requirements.txt .
 # COPY sonar-project.properties .
 RUN pip install -r requirements.txt
+RUN useradd --create-home appuser
+USER appuser
 # COPY . .
 CMD ["python", "app/main.py"]
