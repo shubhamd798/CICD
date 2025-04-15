@@ -36,7 +36,8 @@ jobs:
           -Dsonar.organization=shubhamd798 \
           -Dsonar.sources=DevSecOps-secure-app \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+          -Dsonar.python.coverage.reportPaths=coverage.xml
 
     # You can then continue with the rest of the steps below...
     - name: 🌀 Set up Python
@@ -56,6 +57,7 @@ jobs:
     - name: ✅ Run Unit Tests
       working-directory: DevSecOps-secure-app
       run: |
+        pip install pytest pytest-cov
         export PYTHONPATH=$PYTHONPATH:$(pwd)/app
         # pytest tests/
         pytest --cov=app --cov-report=xml tests/
