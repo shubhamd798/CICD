@@ -7,6 +7,6 @@ sonar.python.version=3.9
 sonar.host.url=https://sonarcloud.io
 ; sonar.language=py
 sonar.login=abcaffe8b76c6cd776974c0936d48714a78ada1a
-sonar.python.coverage.reportPaths=coverage.xml
+sonar.python.coverage.reportPaths=DevSecOps-secure-app/coverage.xml
 sonar.newCode.referenceBranch=main
 sonar.projectDate=2025-04-14

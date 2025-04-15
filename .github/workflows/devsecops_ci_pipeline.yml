@@ -24,7 +24,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-        
+
     - name: Install test dependencies
       run: |
           pip install -r requirements.txt
@@ -33,7 +33,7 @@ jobs:
     - name: Run Tests with Coverage
       run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/app
-          pytest --cov=app --cov-report=xml tests/
+          pytest --cov=app --cov-report=xml:coverage.xml tests/
 
     - name: Normalize coverage paths for SonarCloud
       run: |
