@@ -1,9 +1,7 @@
-# tests/test_main.py
+from app.main import greet  # ← importing your function from main.py
 
-from app.main import greet
+def test_greet_valid():
+    assert greet("Shubham") == "Hello, Shubham!"  # success test
 
-def test_valid_greeting():
-    assert greet("Shubh") == "Hello, Shubh!"
-
-def test_invalid_greeting():
-    assert greet("") == "Invalid name."
+def test_greet_invalid():
+    assert greet("") == "Invalid name."  # fail case test
