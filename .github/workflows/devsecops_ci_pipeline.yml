@@ -32,6 +32,7 @@ jobs:
       
     - name: Run Tests with Coverage
       run: |
+          cd DevSecOps-secure-app
           export PYTHONPATH=$PYTHONPATH:$(pwd)/app
           pytest --cov=app --cov-report=xml:coverage.xml tests/
 
