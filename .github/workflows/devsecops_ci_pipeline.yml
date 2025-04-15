@@ -24,7 +24,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-
+        
+    - name: Install test dependencies
+      run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      
     - name: Run Tests with Coverage
       run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/app
@@ -115,4 +120,3 @@ jobs:
       if: failure()
       run: echo "❌ Build or Security Scan failed"
   
-      
