@@ -38,7 +38,7 @@ jobs:
 
     - name: Normalize coverage paths for SonarCloud
       run: |
-         sed -i 's|C:\\\\Users\\\\shubh\\\\OneDrive\\\\Documents\\\\CICD\\\\DevSecOps-secure-app\\\\app|app|g' coverage.xml
+         sed -i 's|C:\\\\Users\\\\shubh\\\\OneDrive\\\\Documents\\\\CICD\\\\DevSecOps-secure-app\\\\app|app|g' DevSecOps-secure-app/coverage.xml
         
 
     - name: 🔍 Run SonarScanner CLI
