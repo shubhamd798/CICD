@@ -1,6 +1,6 @@
 # app/main.py
 
-from utils import format_message, is_valid_name
+from app.utils import format_message, is_valid_name
 
 def greet(name):
     if is_valid_name(name):
