@@ -25,6 +25,16 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Run Tests with Coverage
+      run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/app
+          pytest --cov=app --cov-report=xml tests/
+
+    - name: Normalize coverage paths for SonarCloud
+      run: |
+         sed -i 's|C:\\\\Users\\\\shubh\\\\OneDrive\\\\Documents\\\\CICD\\\\DevSecOps-secure-app\\\\app|app|g' coverage.xml
+        
+
     - name: 🔍 Run SonarScanner CLI
       run: |
         curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
@@ -63,11 +73,11 @@ jobs:
         pytest --cov=app --cov-report=xml tests/
         
 
-    - name: 📤 Upload Coverage Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: DevSecOps-secure-app/coverage.xml
+    # - name: 📤 Upload Coverage Report
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: coverage-report
+    #     path: DevSecOps-secure-app/coverage.xml
       
 
     - name: 🛡️ Snyk Dependency Scan (run block)
@@ -105,3 +115,4 @@ jobs:
       if: failure()
       run: echo "❌ Build or Security Scan failed"
   
+      
